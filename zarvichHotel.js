@@ -4,7 +4,7 @@ var dotenv = require('dotenv');
 var mongo = require('mongodb');
 var MongoClient = mongo.MongoClient;
 dotenv.config();
-var MongoUrl = process.env.MongoLiveUrl;
+var MongoUrl = "mongodb+srv://test:testuser@cluster0.gcwdn.mongodb.net/Hotels?retryWrites=true&w=majority";
 var cors = require('cors')
 const bodyparser = require('body-parser');
 const res = require('express/lib/response');
