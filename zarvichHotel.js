@@ -4,9 +4,10 @@ var dotenv = require('dotenv');
 var mongo = require('mongodb');
 var MongoClient = mongo.MongoClient;
 dotenv.config();
-var MongoUrl = "mongodb+srv://test:testuser@cluster0.gcwdn.mongodb.net/Hotels?retryWrites=true&w=majority";
+var MongoUrl = process.env.MongoLiveUrl;
 var cors = require('cors')
 const bodyparser = require('body-parser');
+const res = require('express/lib/response');
 var port = process.env.PORT || 1400;
 var db;
 
@@ -53,13 +54,57 @@ zarvich.get('/bookings', (req,res) => {
     })
 })
 
-//return all home page gallery
+
+// post bookings to reservation database 
+zarvich.post('/bookNow',(req,res)=>{
+	console.log(req.body);
+	db.collection('reservations').insertOne(req.body,(err,result)=>{
+		if(err) throw err;
+		res.send("Reservation Placed")
+	})
+})
+//Delete bookings in Reservation (Note the Query)
+zarvich.delete('/delBooking',(req,res)=>{
+    var query = req.query.user_id
+    db.collection('reservations').deleteOne({user_id:query},(err,result)=>{
+        if(err) throw err;
+        res.send(result)
+    })
+})
+
+//Delete pictures in Home Page carousel
+zarvich.delete('/homepixdel',(req,res)=>{
+     //var query = req.query.user_id
+    db.collection('homePageGallery').deleteOne({},(err,result)=>{
+        if(err) throw err;
+        res.send(result)
+    })
+})
+//post pictures to home page carousel
+zarvich.post('/homepix',(req,res)=>{
+	console.log(req.body);
+	db.collection('homePageGallery').insertOne(req.body,(err,result)=>{
+		if(err) throw err;
+		res.send("Reservation Placed")
+	})
+})
+
+//return all home page carousel
 zarvich.get('/homegallery', (req,res) => {
     db.collection('homePageGallery').find().toArray((err,result) => {
         if(err) throw err;
         res.send(result)
     })
 })
+
+//return all home page Images
+zarvich.get('/homecarousel', (req,res) => {
+    db.collection('homepagecarousel').find().toArray((err,result) => {
+        if(err) throw err;
+        res.send(result)
+    })
+})
+
 
 
 //return all room page gallery
@@ -70,45 +115,10 @@ zarvich.get('/roomgallery', (req,res) => {
     })
 })
 
-// post bookings to reservation database 
-zarvich.post('/bookNow',(req,res)=>{
-	console.log(req.body);
-	db.collection('reservations').insertOne(req.body,(err,result)=>{
-		if(err) throw err;
-		res.send("Reservation Placed")
-	})
-})
-//Delete bookings in Reservation
-zarvich.delete('/delBooking',(req,res)=>{
-    //var query = req.query.user_id
-    db.collection('reservations').deleteOne({},(err,result)=>{
-        if(err) throw err;
-        res.send(result)
-    })
-})
-
-
-//Delete pictures in Home Page Gallery
-zarvich.delete('/homepixdel',(req,res)=>{
-     //var query = req.query.user_id
-    db.collection('homePageGallery').deleteOne({},(err,result)=>{
-        if(err) throw err;
-        res.send(result)
-    })
-})
-//post pictures to home page Gallery
-zarvich.post('/homepix',(req,res)=>{
-	console.log(req.body);
-	db.collection('homePageGallery').insertOne(req.body,(err,result)=>{
-		if(err) throw err;
-		res.send("Reservation Placed")
-	})
-})
-
 //Delete pictures in room Page Gallery
 zarvich.delete('/roompixdel',(req,res)=>{
-    //var query = req.query.user_id
-   db.collection('roomtypeGallery').deleteOne({},(err,result)=>{
+    var query = req.query.image_id;
+   db.collection('roomtypeGallery').deleteOne({image_id:query},(err,result)=>{
        if(err) throw err;
        res.send(result)
    })
@@ -122,7 +132,35 @@ zarvich.post('/roompix',(req,res)=>{
    })
 })
 
-zarvich.post('/newsletter',(req,res)=>{
+
+//return all hotel gallery
+zarvich.get('/hotelpics', (req,res) => {
+    db.collection('HotelPix').find().toArray((err,result) => {
+        if(err) throw err;
+        res.send(result)
+    })
+})
+
+//Delete pictures in hotel Gallery
+zarvich.delete('/delhotelpics',(req,res)=>{
+    var query = req.query.hotelp_id;
+   db.collection('HotelPix').deleteOne({hotelp_id:query},(err,result)=>{
+       if(err) throw err;
+       res.send(result)
+   })
+})
+
+//post pictures to hotel Gallery
+zarvich.post('/addhotelpics',(req,res)=>{
+   console.log(req.body);
+   db.collection('HotelPix').insertOne(req.body,(err,result)=>{
+       if(err) throw err;
+       res.send("Reservation Placed")
+   })
+})
+
+
+zarvich.post('/addnewsletter',(req,res)=>{
     console.log(req.body);
     db.collection('newsletter').insertOne(req.body,(err,result)=>{
         if(err) throw err;
@@ -130,7 +168,12 @@ zarvich.post('/newsletter',(req,res)=>{
     })
  })
  
-
+ zarvich.get('/allnewsletter', (req,res) => {
+    db.collection('newsletter').find().toArray((err,result) => {
+        if(err) throw err;
+        res.send(result)
+    })
+})
 
 
 
