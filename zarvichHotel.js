@@ -74,8 +74,8 @@ zarvich.delete('/delBooking',(req,res)=>{
 
 //Delete pictures in Home Page carousel
 zarvich.delete('/homepixdel',(req,res)=>{
-     //var query = req.query.user_id
-    db.collection('homePageGallery').deleteOne({},(err,result)=>{
+     var query = req.query.gallery_id
+    db.collection('homePageGallery').deleteOne({gallery_id:query},(err,result)=>{
         if(err) throw err;
         res.send(result)
     })
@@ -117,7 +117,7 @@ zarvich.get('/roomgallery', (req,res) => {
 
 //Delete pictures in room Page Gallery
 zarvich.delete('/roompixdel',(req,res)=>{
-    var query = req.query.image_id;
+    var query = req.query.image_id
    db.collection('roomtypeGallery').deleteOne({image_id:query},(err,result)=>{
        if(err) throw err;
        res.send(result)
@@ -143,7 +143,7 @@ zarvich.get('/hotelpics', (req,res) => {
 
 //Delete pictures in hotel Gallery
 zarvich.delete('/delhotelpics',(req,res)=>{
-    var query = req.query.hotelp_id;
+    var query = req.query.hotelp_id
    db.collection('HotelPix').deleteOne({hotelp_id:query},(err,result)=>{
        if(err) throw err;
        res.send(result)
