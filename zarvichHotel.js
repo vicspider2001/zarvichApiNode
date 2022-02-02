@@ -40,6 +40,9 @@ zarvich.get('/rooms', (req,res)=> {
         query={'roomtype_id':Number(req.query.details)}
     }
 
+//return roomtypes wrt filters
+
+
     db.collection('hoteldata').find(query).toArray((err,result) => {
         if(err) throw err;
         res.send(result)
@@ -71,6 +74,7 @@ zarvich.delete('/delBooking',(req,res)=>{
         res.send(result)
     })
 })
+
 
 //Delete pictures in Home Page carousel
 zarvich.delete('/homepixdel',(req,res)=>{
@@ -170,6 +174,14 @@ zarvich.post('/addnewsletter',(req,res)=>{
  
  zarvich.get('/allnewsletter', (req,res) => {
     db.collection('newsletter').find().toArray((err,result) => {
+        if(err) throw err;
+        res.send(result)
+    })
+})
+
+//room facilities wrt roomID
+zarvich.get('/facilities', (req,res) => {
+    db.collection('roomFacility').find().toArray((err,result) => {
         if(err) throw err;
         res.send(result)
     })
