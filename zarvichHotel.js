@@ -17,6 +17,7 @@ zarvich.use(bodyparser.json());
 zarvich.use(cors());
 
 
+
 zarvich.get('/',(re,res)=>{
     res.send("This is root page")
 })
@@ -179,11 +180,24 @@ zarvich.post('/addnewsletter',(req,res)=>{
     })
 })
 
-//room facilities wrt roomID
-zarvich.get('/facilities', (req,res) => {
-    db.collection('roomFacility').find().toArray((err,result) => {
-        if(err) throw err;
-        res.send(result)
+// return all facilities (Param)
+zarvich.get('/amenities',(req,res) => {
+    var query = {};
+    console.log(req.query.facilities)
+    if(req.query.facilities){
+        query={facility_id:Number(req.query.facilities)}
+    }
+
+
+ // return all facilities wrt roomID (Query Param)
+    else if(req.query.RoomID){
+        var RoomID = (req.query.RoomID)
+        query={"roomtype_id":Number(req.query.RoomID)}
+    }
+
+db.collection('roomFacility').find(query).toArray((err,result) => {
+    if(err) throw err;
+    res.send(result)
     })
 })
 
