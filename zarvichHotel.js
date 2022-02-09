@@ -78,7 +78,7 @@ zarvich.delete('/delBooking',(req,res)=>{
 //Return booking menu  (Note the Query)
 zarvich.post('/roomitems',(req,res) => {
     console.log(req.body);
-    db.collection('bookedrooms').find({roommenu_id:{$in:req.body}}).toArray((err,result) => {
+    db.collection('BookedRooms').find({roommenu_id:{$in:req.body}}).toArray((err,result) => {
          if(err) throw err;
         res.send(result)
     })
