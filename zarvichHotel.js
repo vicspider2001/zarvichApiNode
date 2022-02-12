@@ -62,7 +62,7 @@ zarvich.get('/bookings', (req,res) => {
 // post bookings to reservation database 
 zarvich.post('/bookNow',(req,res)=>{
 	console.log(req.body);
-	db.collection('reservations').insertOne(req.body,(err,result)=>{
+	db.collection('reservations').insert(req.body,(err,result)=>{
 		if(err) throw err;
 		res.send("Reservation Placed")
 	})
